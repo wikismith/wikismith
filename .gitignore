@@ -1,6 +1,7 @@
 node_modules/
 bower_components/
 .idea
+.idea/
 www/
 build/
 temporary_stash/
