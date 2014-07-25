@@ -1,0 +1,38 @@
+{
+  "name": "wikismith",
+  "version": "0.0.1",
+  "description": "Fun static site generator for fans of gulp and bower",
+  "main": "index.js",
+  "dependencies": {
+    "ejs": "^1.0.0",
+    "event-stream": "^3.1.7",
+    "front-matter": "^0.2.0",
+    "gulp": "^3.8.6",
+    "gulp-util": "^3.0.0",
+    "gulp-watch": "^0.6.8",
+    "js-yaml": "^3.1.0",
+    "parsetrace": "^0.2.0",
+    "slug": "^0.5.0",
+    "unique-stream": "^1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wikismith/wikismith.git"
+  },
+  "keywords": [
+    "SSG",
+    "gulp",
+    "bower",
+    "wiki"
+  ],
+  "author": "Jeffrey Hicks",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wikismith/wikismith/issues"
+  },
+  "homepage": "https://github.com/wikismith/wikismith"
+}
