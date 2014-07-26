@@ -10,7 +10,9 @@ var yaml = require('js-yaml');
 var slug = require('slug');
 var parsetrace = require('parsetrace');
 var ejs = require('ejs');
-var unique_stream = require('unique-stream');
+
+var throttle_duplicates = require('./lib/throttle_duplicates');
+var relate_stream = require('./lib/relate_stream.js');
 
 // EXPORTED METHODS
 
@@ -20,7 +22,21 @@ module.exports = {
     src_pages: src_pages,
     src_modules: src_modules,
     render_page: render_page,
-    build_module_assets: build_module_assets
+    build_module_assets: build_module_assets,
+    unfolder_index: unfolder_index,
+    module_pages: module_pages
+}
+
+function module_pages() {
+    // given a module emit all the related pages
+    return relate_stream( function(file1, stream) {
+        src_pages()
+            .pipe(es.map( function(file2,cb) {
+               if (file2.params.module == file1.module) {
+                    stream.emit('data', file2);
+               }
+            }))
+    })
 }
 
 function src_pages() {
@@ -36,19 +52,31 @@ function src_modules() {
 function watch_pages() {
     return watch({glob:'./pages/**/*', emitOnGlob: false})
         .pipe(get_page_index())
-        .pipe(unique_stream('path',1000))
+        .pipe(throttle_duplicates('path',1000))
         .pipe(decoratePage())
 }
 
 function watch_modules() {
     return watch({glob:'./wikismith_modules/**/*', emitOnGlob: false})
         .pipe(get_module_index())
-        .pipe(unique_stream('path',1000))
+        .pipe(throttle_duplicates('path',1000))
         .pipe(decorateModule())
+}
+
+function unfolder_index() {
+    return es.map(function (file, cb) {
+        if (file.page=='index') {
+            var cwd = path.join(process.cwd(),'pages')
+            var relative_path = path.relative(cwd, file.path).split(path.sep).slice(1).join(path.sep)
+            file.path = path.join(cwd, relative_path);
+        }
+        cb(undefined, file);
+    });
 }
 
 function render_page() {
     return es.map(function (file, cb) {
+        gutil.log("Render Page: "+file.page);
         var contents = pageContent(file);
         file.contents =  new Buffer(contents);
         file.path = gutil.replaceExtension(file.path, '.html');
@@ -57,14 +85,23 @@ function render_page() {
 }
 
 function build_module_assets() {
+
     return es.map(function (file, cb) {
+        gutil.log("Build Module: "+file.module);
         var call_back = function() {
             cb(null, file)
         };
         module_path = file.path;
         delete require.cache[require.resolve(module_path)]
         var wikismith_module = require(module_path);
-        wikismith_module.build_module_assets(cb);
+        try {
+            wikismith_module.build_module_assets(call_back);
+        }
+        catch (error) {
+            gutil.log(gutil.colors.red("Error Building "+file.module));
+            gutil.beep();
+            call_back();
+        }
     });
 }
 
