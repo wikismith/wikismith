@@ -24,7 +24,8 @@ module.exports = {
     render_page: render_page,
     build_module_assets: build_module_assets,
     unfolder_index: unfolder_index,
-    module_pages: module_pages
+    module_pages: module_pages,
+    wiki: wiki
 }
 
 function module_pages() {
@@ -57,7 +58,7 @@ function watch_pages() {
 }
 
 function watch_modules() {
-    return watch({glob:'./wikismith_modules/**/*', emitOnGlob: false})
+    return watch({glob:'wikismith_modules/**/*', emitOnGlob: false})
         .pipe(get_module_index())
         .pipe(throttle_duplicates('path',1000))
         .pipe(decorateModule())
@@ -212,24 +213,31 @@ function renderError(file, error, wikismith_error) {
 
 }
 
-function makeWiki(data, page) {
-    var results = String(data);
-    var matches = results.match(/\[\[.*?\]\]/g) || [];
-    matches.forEach( function(match) {
-        var title = match.replace("[[",'').replace("]]",'')
-        var slug_name =  slug(match,"_").toLowerCase();
-        var newf = process.cwd() + '/wiki/'+ slug_name+'.md';
-        if (fs.existsSync(newf) == false) {
-            gutil.log(gutil.colors.yellow('Creating New File: '+ '/wiki/'+ slug_name+'.md'));
-            // Create Fontmatter
-            var attrs = page.attributes;
-            attrs.title = title;
-            attrs.subtitle = '';
-            attrs.crumbs = attrs.crumbs; // Worry about adding myself later
-            var newBody = "---\n"+yaml.dump(attrs, {flowlevel: 10})+"---\n"
-            fs.writeFile(newf, newBody);
-        }
-        results = results.replace(match, "<a href='"+slug_name+".html'>"+title+"</a>")
+function wiki() {
+    return es.map( function(file1, cb) {
+        data = file1.contents;
+        var results = String(data);
+        var matches = results.match(/\[\[.*?\]\]/g) || [];
+        matches.forEach( function(match) {
+            var title = match.replace("[[",'').replace("]]",'')
+            var slug_name =  slug(match,"_").toLowerCase();
+            var newfldr = path.join(process.cwd(),'pages',slug_name);
+            var newf = path.join(process.cwd(),'pages',slug_name,'index.md');
+            if (fs.existsSync(newf) == false) {
+                if (fs.existsSync(newfldr) == false) {
+                    fs.mkdirSync(newfldr);
+                }
+                gutil.log(gutil.colors.yellow('Creating New File: '+ '/pages/'+ slug_name+'/index.md'));
+                // Create Fontmatter
+                var attrs = file1.params;
+                attrs.title = title;
+                attrs.subtitle = '';
+                var newBody = "---\n"+yaml.dump(attrs, {flowlevel: 10})+"---\n"
+                fs.writeFile(newf, newBody);
+            }
+            results = results.replace(match, "<a href='/"+slug_name+"/index.html'>"+title+"</a>")
+        })
+        file1.contents = new Buffer(results);
+        cb(undefined, file1);
     })
-    return results;
 }
