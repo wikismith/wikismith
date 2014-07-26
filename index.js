@@ -186,15 +186,22 @@ function renderError(file, error, wikismith_error) {
         "<h1 class='text-muted'><%=wikismith_error%></h1>",
         "<p class='lead'>Failed to render page <%=file.page%> with module <%=file.params.module%></p>",
         "<div class='error-box'><%-error.name%>: <%=error.message.split('\\n').slice(-1)[0]%></div>",
-        "<%if (parsetrace.object().frames[0].file.match('ejs.js')) {%>",
+        "<%if (parsetrace.match('ejs.js')) {%>",
         "<h3>EJS Error</h3>",
         "<pre><%=error.message%></pre>",
         "<%}%>",
         "<h3>Stack Trace</h3>",
-        "<pre><%-parsetrace.toString()%></pre>",
+        "<pre><%-parsetrace%></pre>",
         "</body></html>"].join("\n")
 
-    var pt = parsetrace(error, { sources: true });
+    try
+    {
+        var pt = parsetrace(error, { sources: true }).toString();
+    }
+    catch (e2)
+    {
+        var pt = error.stack;
+    }
 
     return ejs.render(template_data, {
         file: file,
