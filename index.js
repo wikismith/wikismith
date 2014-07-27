@@ -1,7 +1,7 @@
 var es = require('event-stream');
 var core = require('./lib/core.js');
 
-function render_pipeline() {
+function process() {
     return es.pipeline(
         core.render_page(),
         core.unfolder_index(),
@@ -27,4 +27,4 @@ function watch() {
     return es.merge(s0, s1, s2);
 }
 
-module.exports = {render_pipeline:render_pipeline, src:src, watch:watch};
+module.exports = {process:process, src:src, watch:watch};
