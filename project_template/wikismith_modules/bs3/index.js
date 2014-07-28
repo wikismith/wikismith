@@ -1,15 +1,15 @@
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var inject = require("gulp-inject");
+var es = require('event-stream');
+var wiredep = require('wiredep');
+
 var marked = require('marked');
 var highlight = require('highlight.js');
 var ejs = require('ejs');
-var trim = require('trim');
-var gutil = require('gulp-util');
 var xregexp = require('xregexp');
-var gulp = require('gulp');
-var es = require('event-stream');
+
 var path = require('path');
-var wiredep = require('wiredep');
-var inject = require("gulp-inject");
-var frontmatter = require("front-matter");
 var fs = require("fs");
 
 var renderer = new marked.Renderer();

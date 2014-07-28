@@ -26,3 +26,7 @@ function serve() {
 gulp.task('default', function() {
     serve()
 });
+
+gulp.task('install', function() {
+    wikismith.core.install();
+})

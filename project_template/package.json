@@ -1,11 +1,7 @@
 {
-  "devDependencies": {
-    "event-stream": "^3.1.5",
-    "gulp": "^3.6.2",
-    "http": "0.0.0",
-    "mustache": "^0.8.1"
-  },
   "dependencies": {
+    "event-stream": "^3.1.5",
+    "mustache": "^0.8.1",
     "better-stack-traces": "^1.0.1",
     "ejs": "^1.0.0",
     "front-matter": "^0.2.0",
