@@ -1,6 +1,6 @@
 {
   "name": "wikismith",
-  "version": "0.0.40",
+  "version": "0.0.42",
   "description": "Fun static site generator for fans of gulp and bower",
   "main": "index.js",
   "dependencies": {
@@ -11,11 +11,11 @@
     "gulp": "^3.8.6",
     "gulp-bower": "0.0.6",
     "gulp-util": "^3.0.0",
-    "gulp-watch": "^0.6.8",
+    "gulp-watch": "^0.6.9",
     "js-yaml": "^3.1.0",
+    "npm-install-dest": "0.0.2",
     "parsetrace": "^0.2.0",
-    "wait": "^0.1.0",
-    "wikismith-bs3": "0.0.2"
+    "wait": "^0.1.0"
   },
   "devDependencies": {},
   "scripts": {

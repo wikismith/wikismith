@@ -1,5 +1,6 @@
-var es = require('event-stream');
 var core = require('./lib/core.js');
+var gulp = require('gulp');
+var es = require('event-stream');
 var fs = require('fs');
 
 function pipeline() {
@@ -27,4 +28,14 @@ function watch() {
     return es.merge(s0, s1, s2);
 }
 
-module.exports = {pipeline: pipeline, src:src, watch:watch, core: core};
+function install() {
+    var s1 = gulp.src('./wikismith_modules/*/bower.json')
+        .pipe(core.bower_install());
+
+    var s2 = gulp.src('./wikismith_modules/*/package.json')
+        .pipe(core.npm_install());
+
+    return es.merge(s1, s2);
+}
+
+module.exports = {pipeline: pipeline, src:src, watch:watch, install: install, core: core};
