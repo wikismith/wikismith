@@ -25,6 +25,15 @@ function watch() {
     var s2 = core.watch_themes()
         .pipe(core.gulp_theme())
         .pipe(core.emit_pages());
+    return es.merge(s0, s1, s2);	
+}
+
+function watch_all() {
+    var s0 = src();
+    var s1 = core.watch_pages();
+    var s2 = core.watch_themes_all()
+        .pipe(core.gulp_theme())
+        .pipe(core.emit_pages());
     return es.merge(s0, s1, s2);
 }
 
@@ -38,4 +47,4 @@ function install() {
     return es.merge(s1, s2);
 }
 
-module.exports = {pipeline: pipeline, src:src, watch:watch, install: install, core: core};
+module.exports = {pipeline: pipeline, src:src, watch:watch, watch_all: watch_all, install: install, core: core};
