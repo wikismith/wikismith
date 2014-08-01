@@ -1,6 +1,6 @@
 {
   "name": "wikismith",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Fun static site generator for fans of gulp and bower",
   "main": "index.js",
   "dependencies": {
