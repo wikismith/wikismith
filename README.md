@@ -2,21 +2,19 @@ Wikismith
 ---------------
 Wikismith is a fun static site generator for fans of gulp and bower
 
-##Installation
+## Get Started
 
-* npm install wikismith
+* npm install generator-wikismith
 
-## Project Setup
+* mkdir my-awesome-site
 
-Since generator-wikismith isn't ready, just clone a working project.
+* cd my-awesome-site
 
-* git clone https://github.com/wikismith/site.git
-
-* cd site
-
-* npm install
-
-* gulp install
+* yo wikismith
 
 * gulp
+
+## Learn more
+
+* http://wikismith.com
 
