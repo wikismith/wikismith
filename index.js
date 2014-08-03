@@ -7,6 +7,7 @@ function pipeline() {
     return es.pipeline(
         core.render_page(),
         core.unfolder_index(),
+        core.page_snippet(),
         core.wiki()
     );
 }
@@ -21,7 +22,8 @@ function src() {
 
 function watch() {
     var s0 = src();
-    var s1 = core.watch_pages();
+    var s1 = core.watch_pages()
+        .pipe(core.emit_dependent());
     var s2 = core.watch_themes()
         .pipe(core.gulp_theme())
         .pipe(core.emit_pages());
@@ -30,7 +32,8 @@ function watch() {
 
 function watch_all() {
     var s0 = src();
-    var s1 = core.watch_pages();
+    var s1 = core.watch_pages()
+        .pipe(core.emit_dependent())
     var s2 = core.watch_themes_all()
         .pipe(core.gulp_theme())
         .pipe(core.emit_pages());
