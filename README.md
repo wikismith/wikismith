@@ -18,3 +18,9 @@ Wikismith is a fun static site generator for fans of gulp and bower
 
 * http://wikismith.com
 
+## Updates
+
+* 8/3/2014 - Added blog functionality via page_snippets.
+
+* 8/1/2014 - Release
+
