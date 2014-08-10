@@ -22,6 +22,9 @@ Wikismith is a fun static site generator for fans of gulp and bower
 
 ## Updates
 
+
+* 8/10/2014 - Default theme folder set to "themes" instead of "wikismith_themes"
+
 * 8/4/2014 - Added bespoke.js presentations to wikismith_themes
 
 * 8/3/2014 - Added blog functionality via page_snippets.
